@@ -1,6 +1,6 @@
 package es.academia.campushub.entity;
 
-public class Docente extends Departamento {
+public class Docente {
     private long id;
     private String nombre;
     private String apellidos;

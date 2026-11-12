@@ -2,7 +2,7 @@ package es.academia.campushub.entity;
 
 import java.time.LocalDate;
 
-public class ContactoEstudiante extends Estudiante {
+public class ContactoEstudiante {
     private long id;
     private String nombreTutor;
     private String telefono;

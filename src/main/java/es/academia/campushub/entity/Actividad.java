@@ -2,7 +2,7 @@ package es.academia.campushub.entity;
 
 import java.time.LocalDate;
 
-public class Actividad extends Docente {
+public class Actividad {
     private long id;
     private String titulo;
     private String descripcion;
