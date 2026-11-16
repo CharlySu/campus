@@ -1,17 +1,7 @@
 package es.academia.campushub.mapper;
 
-import es.academia.campushub.controller.dto.ActividadResponse;
-import es.academia.campushub.controller.dto.ContactoResponse;
-import es.academia.campushub.controller.dto.DepartamentoResponse;
-import es.academia.campushub.controller.dto.DocenteResponse;
-import es.academia.campushub.controller.dto.EstudianteResponse;
-import es.academia.campushub.controller.dto.GrupoResponse;
-import es.academia.campushub.entity.Actividad;
-import es.academia.campushub.entity.ContactoEstudiante;
-import es.academia.campushub.entity.Departamento;
-import es.academia.campushub.entity.Docente;
-import es.academia.campushub.entity.Estudiante;
-import es.academia.campushub.entity.Grupo;
+import es.academia.campushub.controller.dto.*;
+import es.academia.campushub.entity.*;
 
 public final class Mapper {
     private Mapper() {}
@@ -58,5 +48,27 @@ public final class Mapper {
                 c.getEmail(),
                 c.isAutorizado(),
                 c.getFechaAutorizacion() == null ? null : c.getFechaAutorizacion().toString());
+    }
+    public static EtiquetaResponse toResponse(Etiqueta e) {
+        return new EtiquetaResponse(e.getId(), e.getNombre());
+    }
+
+    public static InscripcionResponse toResponse(Inscripcion i) {
+        return new InscripcionResponse(
+                i.getId(),
+                i.getActividad().getId(),
+                i.getEstudiante().getId(),
+                i.getFechaInscripcion().toString());
+    }
+
+    public static ActividadHistorialResponse toHistorial(Inscripcion i) {
+        Actividad a = i.getActividad();
+        return new ActividadHistorialResponse(
+                a.getId(),
+                a.getTitulo(),
+                a.getTipo(),
+                a.getFechaPrevista().toString(),
+                i.getFechaInscripcion().toString(),
+                toResponse(a.getDocente()));
     }
 }
