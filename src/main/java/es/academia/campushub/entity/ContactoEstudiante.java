@@ -1,21 +1,48 @@
 package es.academia.campushub.entity;
 
 import jakarta.persistence.*;
-
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Table
+@Table(name = "contacto_estudiante")
+@Getter
+@Setter
 public class ContactoEstudiante {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private long id;
-    @Column(nullable=false, length=100)
-    private String nombreTutor;
-    @Column(nullable=false, unique=true, length=100)
+    @Column(name = "estudiante_id")
+    private Long id;
+
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @MapsId
+    @JoinColumn(name = "estudiante_id")
+    private Estudiante estudiante;
+
+    @Column(name = "tutor_legal", nullable = false, length = 160)
+    @NotBlank(message = "El tutor legal no puede estar vacío")
+    @Size(max = 160, message = "El tutor legal no puede superar los 160 caracteres")
+    private String tutorLegal;
+
+    @Column(nullable = false, length = 20)
+    @NotBlank(message = "El teléfono no puede estar vacío")
+    @Size(max = 20, message = "El teléfono no puede superar los 20 caracteres")
     private String telefono;
-    @Column(nullable=false, unique=true, length=100)
+
+    @Column(nullable = false, length = 254)
+    @NotBlank(message = "El email no puede estar vacío")
+    @Email(message = "Debe proporcionar un formato de correo electrónico válido")
+    @Size(max = 254, message = "El email no puede superar los 254 caracteres")
     private String email;
-    private boolean autorizacionActividades;
+
+    @Column(nullable = false)
+    private boolean autorizado;
+
+    @Column(name = "fecha_autorizacion")
     private LocalDate fechaAutorizacion;
+
+    public ContactoEstudiante() {}
 }
