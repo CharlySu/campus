@@ -12,7 +12,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "actividad")
+@Table(
+        name = "actividad",
+        indexes = @Index(name = "ix_actividad_docente", columnList = "docente_id"),
+        check = {
+                @CheckConstraint(name = "ck_actividad_max", constraint = "max_participantes > 0"),
+                @CheckConstraint(name = "ck_actividad_tipo", constraint = "length(trim(tipo)) > 0"),
+                @CheckConstraint(name = "ck_actividad_titulo", constraint = "length(trim(titulo)) > 0")
+        })
 @Getter
 @Setter
 public class Actividad {

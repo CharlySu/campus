@@ -10,7 +10,10 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "docente")
+@Table(
+        name = "docente",
+        uniqueConstraints = @UniqueConstraint(name = "uk_docente_email", columnNames = "email"),
+        indexes = @Index(name = "ix_docente_departamento", columnList = "departamento_id"))
 public class Docente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

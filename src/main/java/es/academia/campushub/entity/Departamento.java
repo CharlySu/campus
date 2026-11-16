@@ -9,7 +9,10 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "departamento")
+@Table(
+        name = "departamento",
+        uniqueConstraints = @UniqueConstraint(name = "uk_departamento_nombre", columnNames = "nombre"),
+        check = @CheckConstraint(name = "ck_departamento_nombre", constraint = "length(trim(nombre)) > 0"))
 public class Departamento {
 
     @Id
