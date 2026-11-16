@@ -12,7 +12,14 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "estudiante")
+@Table(
+        name = "estudiante",
+        uniqueConstraints = @UniqueConstraint(name = "uk_estudiante_email", columnNames = "email"),
+        indexes = @Index(name = "ix_estudiante_grupo", columnList = "grupo_id"),
+        check =
+        @CheckConstraint(
+                name = "ck_estudiante_nacimiento",
+                constraint = "fecha_nacimiento < CURRENT_DATE"))
 @Getter
 @Setter
 public class Estudiante {

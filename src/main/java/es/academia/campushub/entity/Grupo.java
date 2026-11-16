@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "grupo")
+@Table(
+        name = "grupo",
+        indexes = @Index(name = "ix_grupo_tutor", columnList = "tutor_docente_id"))
 @Getter
 @Setter
 public class Grupo {
