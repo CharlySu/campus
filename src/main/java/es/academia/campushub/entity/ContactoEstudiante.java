@@ -13,36 +13,36 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ContactoEstudiante {
-    @Id
-    @Column(name = "estudiante_id")
-    private Long id;
+  @Id
+  @Column(name = "estudiante_id")
+  private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @MapsId
-    @JoinColumn(name = "estudiante_id")
-    private Estudiante estudiante;
+  @OneToOne(fetch = FetchType.LAZY, optional = false)
+  @MapsId
+  @JoinColumn(name = "estudiante_id")
+  private Estudiante estudiante;
 
-    @Column(name = "tutor_legal", nullable = false, length = 160)
-    @NotBlank(message = "El tutor legal no puede estar vacío")
-    @Size(max = 160, message = "El tutor legal no puede superar los 160 caracteres")
-    private String tutorLegal;
+  @Column(name = "tutor_legal", nullable = false, length = 160)
+  @NotBlank(message = "El tutor legal no puede estar vacío")
+  @Size(max = 160, message = "El tutor legal no puede superar los 160 caracteres")
+  private String tutorLegal;
 
-    @Column(nullable = false, length = 20)
-    @NotBlank(message = "El teléfono no puede estar vacío")
-    @Size(max = 20, message = "El teléfono no puede superar los 20 caracteres")
-    private String telefono;
+  @Column(nullable = false, length = 20)
+  @NotBlank(message = "El teléfono no puede estar vacío")
+  @Size(max = 20, message = "El teléfono no puede superar los 20 caracteres")
+  private String telefono;
 
-    @Column(nullable = false, length = 254)
-    @NotBlank(message = "El email no puede estar vacío")
-    @Email(message = "Debe proporcionar un formato de correo electrónico válido")
-    @Size(max = 254, message = "El email no puede superar los 254 caracteres")
-    private String email;
+  @Column(nullable = false, length = 254)
+  @NotBlank(message = "El email no puede estar vacío")
+  @Email(message = "Debe proporcionar un formato de correo electrónico válido")
+  @Size(max = 254, message = "El email no puede superar los 254 caracteres")
+  private String email;
 
-    @Column(nullable = false)
-    private boolean autorizado;
+  @Column(nullable = false)
+  private boolean autorizado;
 
-    @Column(name = "fecha_autorizacion")
-    private LocalDate fechaAutorizacion;
+  @Column(name = "fecha_autorizacion")
+  private LocalDate fechaAutorizacion;
 
-    public ContactoEstudiante() {}
+  public ContactoEstudiante() {}
 }
