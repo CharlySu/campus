@@ -1,75 +1,82 @@
 # CampusHub
 
-Proyecto de 2.º DAM. Es una API REST para gestionar actividades de un centro (visitas, talleres...),
-con sus docentes, grupos, estudiantes e inscripciones. Usamos **PostgreSQL** para casi todos los
-datos y **MongoDB** para los seguimientos de las actividades.
+Proyecto de 2.º DAM. API REST para gestionar las actividades complementarias de un centro
+(talleres, charlas, visitas...), con sus docentes, grupos, estudiantes e inscripciones.
 
-Partimos del proyecto base que nos dieron y hemos implementado la persistencia. Los controllers y
-los DTO no los hemos tocado.
+Usamos **PostgreSQL** para los datos estructurados y **MongoDB** para los seguimientos de las
+actividades. Los controllers y los DTO del proyecto base no los hemos modificado.
 
-## Requisitos
+## Requisitos previos
 
-- JDK 21 y Maven 3.9+
-- Docker Desktop (para las bases de datos y para los tests)
+- JDK 21
+- Maven 3.9 o superior
+- Docker Desktop (o Docker Engine) con Docker Compose v2
 
-## Cómo arrancarlo
+## Arrancar la aplicación
 
 ```bash
 mvn spring-boot:run
 ```
 
-Spring Boot levanta solo los contenedores del `compose.yaml`. Si queremos arrancarlos nosotros:
+Spring Boot detecta el `compose.yaml` y levanta PostgreSQL, MongoDB y Redis antes de arrancar.
+Redis no lo usamos (era opcional). Si preferimos gestionar los contenedores a mano:
 
 ```bash
 docker compose up -d
 mvn spring-boot:run -Dspring-boot.run.arguments=--spring.docker.compose.enabled=false
 ```
 
-Para mirar las bases de datos:
+Con la aplicación arrancada, Swagger UI está en <http://localhost:8080/swagger-ui.html>.
+
+## Ejecutar las pruebas
+
+```bash
+mvn spotless:apply   # aplicar el formato
+mvn test             # pruebas unitarias (*Test)
+mvn verify           # pruebas de integración (*IT, necesitan Docker) y comprobación de formato
+```
+
+Las pruebas usan Testcontainers: crean sus propias bases de datos y no tocan las del `compose.yaml`.
+
+## Consultar las bases de datos
 
 ```bash
 docker compose exec postgres psql -U campushub -d campushub
 docker compose exec mongo mongosh campushub
 ```
 
-Con la aplicación arrancada, Swagger está en <http://localhost:8080/swagger-ui.html>.
+Algunos comandos útiles (`\dt`, `SELECT * FROM inscripcion;`, `db.seguimientos.find()`...) están en
+[`docs/evidencias-persistencia.md`](docs/evidencias-persistencia.md).
 
-## Estructura
+## Detener y reiniciar el entorno
+
+- Si arrancamos con `mvn spring-boot:run`, al parar la aplicación (Ctrl + C) se paran también los
+  contenedores. Los **datos se conservan** porque están en volúmenes de Docker.
+- Con el arranque manual: `docker compose stop` para parar y `docker compose start` para volver a
+  empezar.
+- `docker compose down` elimina los contenedores pero conserva los datos.
+- `docker compose down -v` **borra también los datos**. Hay que usarlo si se arrancó antes una
+  versión anterior del proyecto, porque Hibernate (`ddl-auto=update`) no añade los `CHECK` a tablas
+  que ya existían.
+
+## Estructura del proyecto
 
 ```text
-controller/       endpoints REST (no los hemos modificado)
-controller/dto/   DTO de entrada y salida (no los hemos modificado)
+controller/       endpoints REST (sin modificar)
+controller/dto/   DTO de entrada y salida (sin modificar)
 service/          lógica de negocio
 repository/       repositorios de Spring Data (JPA y MongoDB)
 entity/           entidades JPA (PostgreSQL)
 document/         documento de MongoDB (Seguimiento)
-mapper/           pasa de entidades/documentos a DTO
+mapper/           conversión entre entidades/documentos y DTO
 util/             validaciones y excepciones
 docs/             documentación
 ```
 
-## Tests
-
-```bash
-mvn test                # tests unitarios
-mvn verify              # tests de integración (necesitan Docker) y formato
-mvn spotless:apply      # formatear el código antes de verify
-```
-
-Los tests usan Testcontainers, así que crean sus propias bases de datos y no tocan las del
-`compose.yaml`.
-
 ## Documentación
 
-- [`docs/api-contract.md`](docs/api-contract.md): endpoints y códigos de respuesta
-- [`docs/decisiones-persistencia.md`](docs/decisiones-persistencia.md): qué va en PostgreSQL y qué en MongoDB, y por qué
+- [`docs/modelo-datos.md`](docs/modelo-datos.md): diagrama, índices y restricciones
+- [`docs/decisiones-tecnicas.md`](docs/decisiones-tecnicas.md): qué va en cada base de datos y por qué
+- [`docs/evidencias-persistencia.md`](docs/evidencias-persistencia.md): cómo comprobar que los datos están guardados
 - [`docs/ejemplos-api.md`](docs/ejemplos-api.md): ejemplos para probar la API
-
-## Resumen de lo que hemos decidido
-
-- **PostgreSQL:** departamentos, docentes, grupos, estudiantes, actividades, inscripciones,
-  fichas de contacto y etiquetas.
-- **MongoDB:** seguimientos de las actividades, porque el campo `datos` cambia según el tipo.
-- **Aforo:** al inscribir bloqueamos la actividad para que dos personas no cojan la última plaza.
-- **Errores:** 400 si los datos están mal, 404 si no existe algo y 409 si hay duplicados o no hay plazas.
-- **Redis:** no lo hemos usado porque era opcional.
+- [`docs/api-contract.md`](docs/api-contract.md): contrato de la API

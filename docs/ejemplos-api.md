@@ -5,8 +5,8 @@ Con la aplicación arrancada en `http://localhost:8080`.
 La forma más fácil es **Swagger**: <http://localhost:8080/swagger-ui.html>. Se abre un endpoint,
 se pulsa *Try it out*, se cambia el JSON y se pulsa *Execute*.
 
-También se puede con `curl` (Git Bash). Los ids (`1`, `2`...) son los que salen con la base de datos
-vacía. Si ya hay datos, hay que usar los que devuelva cada paso.
+También se puede con `curl` (en Git Bash). Los ids (`1`, `2`...) son los que salen con la base de
+datos vacía. Si ya hay datos, hay que usar los que devuelva cada paso.
 
 ## Flujo completo
 
@@ -80,7 +80,6 @@ nada, las listas salen vacías (`[]`) y no `null`.
 | Crear estudiante con `"email":"sin-arroba"` | 400 |
 | Crear estudiante con fecha de nacimiento futura | 400 |
 | Crear actividad con `"maxParticipantes":0` | 400 |
-| Seguimiento con `"datos":{"a.b":1}` | 400 |
 | Seguimiento sin `datos` | 400 |
 | `GET /api/actividades/99999999` | 404 |
 | Crear docente con un `departamentoId` que no existe | 404 |

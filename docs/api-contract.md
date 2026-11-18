@@ -56,5 +56,6 @@ la protección del almacenamiento frente a inserciones inválidas.
 - También devolvemos 404 si el grupo o el departamento que se indica no existe.
 - `GET /api/estudiantes/{id}/contacto` devuelve 404 si el estudiante existe pero no tiene ficha.
 - `PUT /api/actividades/{id}/etiquetas/{etiquetaId}` se puede repetir y siempre devuelve 204.
-- Los inscritos de una actividad salen ordenados por fecha de inscripción, y el historial de un
-  estudiante por fecha prevista de la actividad.
+- Los inscritos de una actividad salen ordenados por fecha de inscripción, el historial de un
+  estudiante por fecha prevista de la actividad, las actividades de una etiqueta por id y los
+  seguimientos por fecha de creación.
