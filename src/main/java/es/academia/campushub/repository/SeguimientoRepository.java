@@ -1,9 +1,8 @@
 package es.academia.campushub.repository;
 
 import es.academia.campushub.document.Seguimiento;
-import org.springframework.data.mongodb.repository.MongoRepository;
-
 import java.util.List;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface SeguimientoRepository extends MongoRepository<Seguimiento, String> {
 

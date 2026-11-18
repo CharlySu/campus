@@ -18,7 +18,10 @@ import lombok.Setter;
     check = {
       @CheckConstraint(name = "ck_actividad_max", constraint = "max_participantes > 0"),
       @CheckConstraint(name = "ck_actividad_tipo", constraint = "length(trim(tipo)) > 0"),
-      @CheckConstraint(name = "ck_actividad_titulo", constraint = "length(trim(titulo)) > 0")
+      @CheckConstraint(name = "ck_actividad_titulo", constraint = "length(trim(titulo)) > 0"),
+      @CheckConstraint(
+          name = "ck_actividad_descripcion",
+          constraint = "length(trim(descripcion)) > 0")
     })
 @Getter
 @Setter

@@ -13,7 +13,12 @@ import lombok.Setter;
 @Table(
     name = "docente",
     uniqueConstraints = @UniqueConstraint(name = "uk_docente_email", columnNames = "email"),
-    indexes = @Index(name = "ix_docente_departamento", columnList = "departamento_id"))
+    indexes = @Index(name = "ix_docente_departamento", columnList = "departamento_id"),
+    check = {
+      @CheckConstraint(name = "ck_docente_nombre", constraint = "length(trim(nombre)) > 0"),
+      @CheckConstraint(name = "ck_docente_apellidos", constraint = "length(trim(apellidos)) > 0"),
+      @CheckConstraint(name = "ck_docente_email", constraint = "position('@' in email) > 1")
+    })
 public class Docente {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +34,7 @@ public class Docente {
   @Size(max = 120, message = "Los apellidos no pueden superar los 120 caracteres")
   private String apellidos;
 
-  @Column(nullable = false, length = 254, unique = true)
+  @Column(nullable = false, length = 254)
   @NotBlank(message = "El email no puede estar vacío")
   @Email(message = "Debe proporcionar un formato de correo electrónico válido")
   @Size(max = 254, message = "El email no puede superar los 254 caracteres")

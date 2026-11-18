@@ -15,10 +15,16 @@ import lombok.Setter;
     name = "estudiante",
     uniqueConstraints = @UniqueConstraint(name = "uk_estudiante_email", columnNames = "email"),
     indexes = @Index(name = "ix_estudiante_grupo", columnList = "grupo_id"),
-    check =
-        @CheckConstraint(
-            name = "ck_estudiante_nacimiento",
-            constraint = "fecha_nacimiento < CURRENT_DATE"))
+    check = {
+      @CheckConstraint(
+          name = "ck_estudiante_nacimiento",
+          constraint = "fecha_nacimiento < CURRENT_DATE"),
+      @CheckConstraint(name = "ck_estudiante_nombre", constraint = "length(trim(nombre)) > 0"),
+      @CheckConstraint(
+          name = "ck_estudiante_apellidos",
+          constraint = "length(trim(apellidos)) > 0"),
+      @CheckConstraint(name = "ck_estudiante_email", constraint = "position('@' in email) > 1")
+    })
 @Getter
 @Setter
 public class Estudiante {
@@ -36,7 +42,7 @@ public class Estudiante {
   @Size(max = 120, message = "Los apellidos no pueden superar los 120 caracteres")
   private String apellidos;
 
-  @Column(nullable = false, length = 254, unique = true)
+  @Column(nullable = false, length = 254)
   @NotBlank(message = "El email no puede estar vacío")
   @Email(message = "Debe proporcionar un formato de correo electrónico válido")
   @Size(max = 254, message = "El email no puede superar los 254 caracteres")

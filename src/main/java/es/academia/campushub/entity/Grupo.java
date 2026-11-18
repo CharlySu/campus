@@ -5,7 +5,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "grupo", indexes = @Index(name = "ix_grupo_tutor", columnList = "tutor_docente_id"))
+@Table(
+    name = "grupo",
+    indexes = @Index(name = "ix_grupo_tutor", columnList = "tutor_docente_id"),
+    check = {
+      @CheckConstraint(name = "ck_grupo_nombre", constraint = "length(trim(nombre)) > 0"),
+      @CheckConstraint(name = "ck_grupo_nivel", constraint = "length(trim(nivel)) > 0")
+    })
 @Getter
 @Setter
 public class Grupo {

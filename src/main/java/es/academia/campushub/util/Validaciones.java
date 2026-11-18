@@ -4,6 +4,7 @@ import es.academia.campushub.util.exception.InvalidInputException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
+import java.util.Map;
 
 public class Validaciones {
   private Validaciones() {}
@@ -51,5 +52,22 @@ public class Validaciones {
       throw new InvalidInputException(campo + " es obligatorio");
     }
     return valor;
+  }
+
+  public static void clavesDocumento(Object valor, String campo) {
+    if (valor instanceof Map<?, ?> mapa) {
+      for (Map.Entry<?, ?> entrada : mapa.entrySet()) {
+        String clave = String.valueOf(entrada.getKey());
+        if (clave.isEmpty() || clave.contains(".") || clave.startsWith("$")) {
+          throw new InvalidInputException(
+              campo + " contiene una clave no permitida (vacía, con '.' o que empieza por '$')");
+        }
+        clavesDocumento(entrada.getValue(), campo);
+      }
+    } else if (valor instanceof Iterable<?> elementos) {
+      for (Object elemento : elementos) {
+        clavesDocumento(elemento, campo);
+      }
+    }
   }
 }

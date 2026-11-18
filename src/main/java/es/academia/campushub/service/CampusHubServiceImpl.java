@@ -218,9 +218,9 @@ public class CampusHubServiceImpl implements CampusHubService {
     }
     String tipo = Validaciones.texto(request.tipo(), "tipo", 50);
     if (request.datos() == null) {
+      Validaciones.clavesDocumento(request.datos(), "datos");
       throw new InvalidInputException("datos es obligatorio");
     }
-    // La actividad vive en PostgreSQL: se comprueba antes de escribir en MongoDB.
     if (!actividades.existsById(Validaciones.id(actividadId, "actividadId"))) {
       throw new ResourceNotFoundException("Actividad no encontrada");
     }

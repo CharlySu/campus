@@ -20,7 +20,7 @@ public class Departamento {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(nullable = false, length = 100, unique = true)
+  @Column(nullable = false, length = 100)
   @NotBlank(message = "El nombre del departamento no puede estar vacío")
   @Size(max = 100, message = "El nombre no puede superar los 100 caracteres")
   private String nombre;

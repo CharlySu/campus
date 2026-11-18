@@ -9,7 +9,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "contacto_estudiante")
+@Table(
+    name = "contacto_estudiante",
+    check = {
+      @CheckConstraint(
+          name = "ck_contacto_tutor_legal",
+          constraint = "length(trim(tutor_legal)) > 0"),
+      @CheckConstraint(name = "ck_contacto_telefono", constraint = "length(trim(telefono)) > 0"),
+      @CheckConstraint(name = "ck_contacto_email", constraint = "position('@' in email) > 1")
+    })
 @Getter
 @Setter
 public class ContactoEstudiante {
