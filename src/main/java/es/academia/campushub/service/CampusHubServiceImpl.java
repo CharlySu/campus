@@ -218,9 +218,9 @@ public class CampusHubServiceImpl implements CampusHubService {
     }
     String tipo = Validaciones.texto(request.tipo(), "tipo", 50);
     if (request.datos() == null) {
-      Validaciones.clavesDocumento(request.datos(), "datos");
       throw new InvalidInputException("datos es obligatorio");
     }
+    Validaciones.clavesDocumento(request.datos(), "datos");
     if (!actividades.existsById(Validaciones.id(actividadId, "actividadId"))) {
       throw new ResourceNotFoundException("Actividad no encontrada");
     }
